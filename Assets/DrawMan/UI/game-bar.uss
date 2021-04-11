@@ -1,0 +1,28 @@
+.game-bar {
+    background-image: none;
+    width: 32%;
+    height: 10%;
+    -unity-background-scale-mode: stretch-to-fill;
+    cursor: initial;
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    background-color: rgb(64, 64, 64);
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    flex-shrink: 1;
+    left: 24px;
+    top: 16px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
