@@ -437,7 +437,7 @@ crashlytics-build.properties
 
 # Local data
 /[Aa]ssets/LOCAL
-
+/[Aa]ssets/LOCAL.meta
 
 
 .vscode/*
