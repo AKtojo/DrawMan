@@ -32,6 +32,7 @@ namespace DrawMan.Core
 
         [SerializeField] [Min(0.0f)] private float m_minLineStep;
         [SerializeField] private float m_lineDepthZ;
+        [SerializeField] private float m_lineClipZ;
 
         [SerializeField] private float m_lineDuration;
 
@@ -52,6 +53,7 @@ namespace DrawMan.Core
         public float MinLineStep => m_minLineStep;
         public bool IsValid => m_isValid;
         public float LineDepthZ => m_lineDepthZ;
+        public float LineClipZ => m_lineClipZ;
 
         public void SetLineDepth(float depth)
         {
