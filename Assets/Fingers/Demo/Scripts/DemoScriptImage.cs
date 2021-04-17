@@ -57,7 +57,7 @@ namespace DigitalRubyShared
             {
                 ImageScript.Reset();
             }
-            else if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
+            else if (UnityEngine.Input.GetMouseButtonUp(0))
             {
                 ImageGestureImage match = ImageScript.CheckForImageMatch();
                 if (match != null)

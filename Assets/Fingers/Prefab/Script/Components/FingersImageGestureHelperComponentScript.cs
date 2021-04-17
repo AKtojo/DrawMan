@@ -6,9 +6,8 @@
 // Source code may NOT be redistributed or sold.
 // 
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using DigitalRubyShared.DrawMan;
 
 namespace DigitalRubyShared
 {
@@ -45,6 +44,8 @@ namespace DigitalRubyShared
         private Color savedColor;
         private ImageGestureImage matchedImage;
         private float animationTime;
+
+        [SerializeField] private GestureHelperContainer container;
 
         private void ClearLineRenderers()
         {
@@ -164,6 +165,8 @@ namespace DigitalRubyShared
 
             // if we exceed the max path count, we clear all lines immediately
             Gesture.MaximumPathCountExceeded += Gesture_MaximumPathCountExceeded;
+
+            if (container.Helper == null) container.Helper = this;
         }
 
         /// <summary>

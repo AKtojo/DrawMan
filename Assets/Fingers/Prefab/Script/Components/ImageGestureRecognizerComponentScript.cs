@@ -6,7 +6,6 @@
 // Source code may NOT be redistributed or sold.
 // 
 
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -54,7 +53,8 @@ namespace DigitalRubyShared
 
         /// <summary>The images that should be compared against to find a match (can be a file name). The values are a ulong which match the bits of each generated image. See DemoSceneImage &amp; DemoScriptImage.cs for an example.</summary>
         [Tooltip("The images that should be compared against to find a match (can be a file name). The values are a ulong which match the bits of each generated image. See DemoSceneImage & DemoScriptImage.cs for an example.")]
-        public List<ImageGestureRecognizerComponentScriptImageEntry> GestureImages;
+        //public List<ImageGestureRecognizerComponentScriptImageEntry> GestureImages;
+        public List<DrawMan.ImageEntry> GestureImages;
 
         /// <summary>
         /// Allows looking up a key from a matched image
@@ -84,7 +84,7 @@ namespace DigitalRubyShared
         {
             Gesture.GestureImages = new List<ImageGestureImage>();
             GestureImagesToKey = new Dictionary<ImageGestureImage, string>();
-            foreach (ImageGestureRecognizerComponentScriptImageEntry img in GestureImages)
+            foreach (DrawMan.ImageEntry img in GestureImages)
             {
                 List<ulong> rows = new List<ulong>();
                 string imageText;
