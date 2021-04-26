@@ -744,7 +744,7 @@
                 {
                     "name": "",
                     "id": "d6275b12-a88d-46d8-920b-be41c20fdb67",
-                    "path": "<Touchscreen>/press",
+                    "path": "<Touchscreen>/touch*/press",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

@@ -12,7 +12,7 @@ namespace DrawMan.Core.EventsSystem
 		public void Raise()
 		{
             foreach (var listener in listeners)
-				listener.OnEventRaised();
+				listener?.OnEventRaised();
 		}
 
 		public void RegisterListener(GameEventListener listener)

@@ -1,12 +1,12 @@
 using UnityEngine;
 using DigitalRubyShared.DrawMan;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace DrawMan.Components
 {
     public class SymbolsSequencer : MonoBehaviour
-    {
-        [SerializeField] private GestureHelperContainer m_helperContainer;
+    {   [SerializeField] private GestureHelperContainer m_helperContainer;
         [SerializeField] private ImageEntry[] m_sequence;
 
         [SerializeField] private UnityEvent m_onDie;
@@ -20,16 +20,24 @@ namespace DrawMan.Components
 
         public void OnSymbolFound()
         {
-            var match = m_helperContainer.Helper.CheckForImageMatch();
+            Debug.Log("Symbol found callback");
 
+            var match = m_helperContainer.Helper.CheckForImageMatch();
+            var currHash = match.Name.GetHashCode();
+            var checkHash = m_sequence[m_currentIndex].Key.GetHashCode();
+            
             if (match != null &&
-                m_sequence[m_currentIndex].GetHashCode() ==
-                match.GetHashCode())
+                currHash == checkHash)
             {
                 m_currentIndex++;
-                m_currentIndex %= m_sequence.Length;
+                Debug.Log("Current symbol: " + m_currentIndex);
 
-                if (m_currentIndex == 0) m_onDie.Invoke();
+                if (m_currentIndex >= m_sequence.Length)
+                {
+                    Debug.Log("Die!");
+                    m_currentIndex = 0;
+                    m_onDie.Invoke();
+                }
             }
         }
     }
