@@ -42,7 +42,7 @@ namespace DrawMan.Components
                 m_contactsCount++; //|= Vector2.Angle(down, normal) <= m_maxSlopeAngle;
             }
 
-            if (m_contactsCount > 1)
+            if (m_contactsCount > 0)
                 m_up.Normalize();
             else
                 m_up = -down;
