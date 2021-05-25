@@ -3,8 +3,7 @@ using DrawMan.Components;
 
 namespace DrawMan.AI
 {
-    [CreateAssetMenu(fileName = "New ChaseState", menuName = "FSM/Enemies/ChaseState")]
-    public class ChaseState : State<EnemyBehaviour>
+    public class FleeState : State<EnemyBehaviour>
     {
 #if UNITY_EDITOR
         private void OnValidate()
@@ -15,7 +14,6 @@ namespace DrawMan.AI
             }
         }
 #endif
-
         public override void Enter(FiniteStateMachine<EnemyBehaviour> fsm, EnemyBehaviour container)
         {
             // Change animation
@@ -39,21 +37,23 @@ namespace DrawMan.AI
                     container.Stats.MaxRange,
                     container.Occluder) == 0)
                 {
-                    //    float distance = Vector2.Distance(origin, collider[0].transform.position);
+                    float distance = Vector2.Distance(origin, collider[0].transform.position);
 
-                    //    if (distance <= container.Stats.AttackRange)
-                    //    {
-                    //        fsm.ChangeState((int)EnemyBStates.Attack);
-                    //    }
-                    //    else if (distance <= container.Stats.FleeRange)
-                    //    {
-                    //        fsm.ChangeState((int)EnemyBStates.Flee);
-                    //    }
+                    if (distance <= container.Stats.ChaseRange)
+                    {
+                        fsm.ChangeState((int)EnemyBStates.Chase);
+                    }
+                    else if (distance <= container.Stats.AttackRange)
+                    {
+                        fsm.ChangeState((int)EnemyBStates.Attack);
+                    }
+                    else if (distance <= container.Stats.MaxRange)
+                    {
+                        fsm.ChangeState((int)EnemyBStates.Idle);
+                    }
 
-                    // Move towards target
-                    //container.transform.position +=
-                    //    Vector3.right * container.Stats.MoveSpeed * Time.deltaTime * Mathf.Sign(dir.x);
-                    container.SetDirection(dir);
+                    // Move away from target
+                    container.SetDirection(-dir);
                 }
             }
             else
@@ -67,7 +67,7 @@ namespace DrawMan.AI
             // Do nothing
         }
 
-        public override void Initialize(EnemyBehaviour container)
+        public override void Initialize(EnemyBehaviour owner)
         {
             // Initialize
         }
