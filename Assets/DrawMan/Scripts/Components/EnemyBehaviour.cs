@@ -8,12 +8,22 @@ namespace DrawMan.Components
     [System.Serializable]
     public struct EnemyStats
     {
+        [Header("Sensors")]
+        [SerializeField] public LayerMask Player;
+        [SerializeField] public LayerMask Occluder;
         [SerializeField] [Min(0)] public float AttackRange;
         [SerializeField] [Min(0)] public float ChaseRange;
         [SerializeField] [Min(0)] public float FleeRange;
+        
+        [Header("Motion")]
         [SerializeField] [Min(0)] public float MoveSpeed;
         [SerializeField] [Min(0)] public float DamagePerHit;
         [SerializeField] [Min(0)] public float AttackSpeed;
+
+        [Space]
+        [SerializeField] [Min(0)] public float GravityAccel;
+        [SerializeField] [Min(0)] public float MaxFallingSpeed;
+        [SerializeField] [Range(0.0f, 50.0f)] public float ChangeDirectionSpeed;
 
         [SerializeField] [HideInInspector] private float maxRange;
         public float MaxRange => maxRange;
@@ -26,17 +36,42 @@ namespace DrawMan.Components
 
     public class EnemyBehaviour : MonoBehaviour
     {
+        [Header("Components")]
+        [SerializeField] private Rigidbody2D rb;
+        [SerializeField] private GroundCheck groundCheck;
+
+        [Header("Parameters")]
         [SerializeField] private EnemyStats stats;
         [SerializeField] private State<EnemyBehaviour>[] inStates;
 
-        public EnemyStats Stats => stats;
+        [Header("Actions")]
+        [SerializeField] private EnemyMovement movement;
 
+        private Vector2 direction;
         private FiniteStateMachine<EnemyBehaviour> machine;
+
+        public Rigidbody2D Rigidbody => rb;
+
+        public EnemyStats Stats => stats;
+        public Vector2 Direction => direction;
+        public LayerMask Player => stats.Player;
+        public LayerMask Occluder => stats.Occluder;
+
+        public Vector2 Gravity => transform.up * -stats.GravityAccel;
+
+        public bool Grounded => groundCheck.Grounded;
+
+        public void SetDirection(Vector2 direction)
+        {
+            this.direction = direction;
+        }
 
         public void Awake()
         {
             stats.Init();
-            machine = new FiniteStateMachine<EnemyBehaviour>(this, inStates, (int)EnemyBStates.Idle);
+            machine =
+                new FiniteStateMachine<EnemyBehaviour>
+                (this, inStates, (int)EnemyBStates.Idle);
         }
 
 #if UNITY_EDITOR
@@ -54,6 +89,12 @@ namespace DrawMan.Components
         private void Update()
         {
             machine.CurrentState.Execute(machine, this);
+        }
+
+        private void FixedUpdate()
+        {
+            // Move here
+            movement.Move(Direction, this);
         }
 
         /*public void Update()

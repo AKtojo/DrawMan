@@ -6,9 +6,6 @@ namespace DrawMan.AI
     [CreateAssetMenu(fileName = "New IdleState", menuName = "FSM/Enemies/IdleState")]
     public class IdleState : State<EnemyBehaviour>
     {
-        [SerializeField] private LayerMask player;
-        [SerializeField] private LayerMask occluder;
-
 #if UNITY_EDITOR
         private void OnValidate()
         {
@@ -21,6 +18,8 @@ namespace DrawMan.AI
 
         public override void Enter(FiniteStateMachine<EnemyBehaviour> fsm, EnemyBehaviour container)
         {
+            container.SetDirection(Vector2.zero);
+
             // Change animation
         }
 
@@ -33,10 +32,14 @@ namespace DrawMan.AI
             if (Physics2D.OverlapCircleNonAlloc(
                 origin,
                 container.Stats.ChaseRange,
-                collider, player) > 0)
+                collider, container.Player) > 0)
             {
                 //LayerMask mask = ~player.value;
-                if (Physics2D.RaycastNonAlloc(origin, collider[0].transform.position - origin, hit, container.Stats.ChaseRange, occluder) == 0)
+                if (Physics2D.RaycastNonAlloc(
+                    origin,
+                    collider[0].transform.position - origin,
+                    hit, container.Stats.ChaseRange,
+                    container.Occluder) == 0)
                 {
                     // Something entered the ChaseRange
                     fsm.ChangeState((int)EnemyBStates.Chase);
