@@ -3,6 +3,7 @@ using DrawMan.Components;
 
 namespace DrawMan.AI
 {
+    [CreateAssetMenu(fileName = "New FleeState", menuName = "FSM/Enemies/FleeState")]
     public class FleeState : State<EnemyBehaviour>
     {
 #if UNITY_EDITOR
@@ -10,7 +11,7 @@ namespace DrawMan.AI
         {
             if (id == 0)
             {
-                id = (int)EnemyBStates.Chase;
+                id = (int)EnemyBStates.Flee;
             }
         }
 #endif
@@ -39,21 +40,19 @@ namespace DrawMan.AI
                 {
                     float distance = Vector2.Distance(origin, collider[0].transform.position);
 
-                    if (distance <= container.Stats.ChaseRange)
+                    if (distance <= container.Stats.FleeRange)
+                    {
+                        // Move away from target
+                        container.SetDirection(-dir);
+                    }
+                    else if (distance <= container.Stats.ChaseRange)
                     {
                         fsm.ChangeState((int)EnemyBStates.Chase);
                     }
                     else if (distance <= container.Stats.AttackRange)
                     {
-                        fsm.ChangeState((int)EnemyBStates.Attack);
+                        //fsm.ChangeState((int)EnemyBStates.Attack);
                     }
-                    else if (distance <= container.Stats.MaxRange)
-                    {
-                        fsm.ChangeState((int)EnemyBStates.Idle);
-                    }
-
-                    // Move away from target
-                    container.SetDirection(-dir);
                 }
             }
             else

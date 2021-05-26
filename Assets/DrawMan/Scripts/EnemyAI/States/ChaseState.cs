@@ -39,16 +39,16 @@ namespace DrawMan.AI
                     container.Stats.MaxRange,
                     container.Occluder) == 0)
                 {
-                    //    float distance = Vector2.Distance(origin, collider[0].transform.position);
+                    float distance = Vector2.Distance(origin, collider[0].transform.position);
 
                     //    if (distance <= container.Stats.AttackRange)
                     //    {
                     //        fsm.ChangeState((int)EnemyBStates.Attack);
                     //    }
-                    //    else if (distance <= container.Stats.FleeRange)
-                    //    {
-                    //        fsm.ChangeState((int)EnemyBStates.Flee);
-                    //    }
+                    if (distance <= container.Stats.FleeRange)
+                    {
+                        fsm.ChangeState((int)EnemyBStates.Flee);
+                    }
 
                     // Move towards target
                     //container.transform.position +=

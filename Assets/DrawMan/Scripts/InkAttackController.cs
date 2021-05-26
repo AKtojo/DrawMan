@@ -3,11 +3,15 @@ using DrawMan.Core.ActionSystem;
 using DrawMan.Core.EventsSystem;
 using DigitalRubyShared.DrawMan;
 using DigitalRubyShared;
+using UnityEngine.UI;
 
 namespace DrawMan.Core
 {
     public class InkAttackController : MonoBehaviour
     {
+        [SerializeField] private Image m_buttonImage;
+        [Space]
+
         [Header("Ink Attack action")]
         [SerializeField] private InkAttackAction m_action;
 
@@ -29,6 +33,20 @@ namespace DrawMan.Core
                     m_event.Raise();
                 }
                 m_container.Helper.Reset();
+            }
+        }
+
+        public void SwapInk()
+        {
+            enabled = !enabled;
+
+            if (enabled)
+            {
+                m_buttonImage.color = Color.blue;
+            }
+            else
+            {
+                m_buttonImage.color = Color.green;
             }
         }
 

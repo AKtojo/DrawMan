@@ -38,11 +38,19 @@ namespace DrawMan.AI
                 if (Physics2D.RaycastNonAlloc(
                     origin,
                     collider[0].transform.position - origin,
-                    hit, container.Stats.ChaseRange,
+                    hit, container.Stats.MaxRange,
                     container.Occluder) == 0)
                 {
-                    // Something entered the ChaseRange
-                    fsm.ChangeState((int)EnemyBStates.Chase);
+                    float distance = Vector2.Distance(origin, collider[0].transform.position);
+
+                    if (distance <= container.Stats.ChaseRange)
+                    {
+                        fsm.ChangeState((int)EnemyBStates.Chase);
+                    }
+                    else if (distance <= container.Stats.FleeRange)
+                    {
+                        fsm.ChangeState((int)EnemyBStates.Flee);
+                    }
                 }
             }
         }
