@@ -93,8 +93,15 @@ namespace DrawMan.Components
 
         private void FixedUpdate()
         {
+            groundCheck.CheckCollision();
+
             // Move here
             movement.Move(Direction, this);
+        }
+
+        private void OnGUI()
+        {
+            GUILayout.TextArea("Grounded: " + Grounded);
         }
 
         /*public void Update()
