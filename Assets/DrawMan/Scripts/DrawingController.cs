@@ -176,7 +176,7 @@ namespace DrawMan.Core
 
         public void Toggle()
         {
-            gameObject.SetActive(gameObject.activeSelf);
+            gameObject.SetActive(!gameObject.activeSelf);
         }
     }
 }
