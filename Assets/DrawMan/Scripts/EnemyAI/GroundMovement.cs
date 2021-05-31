@@ -24,7 +24,7 @@ namespace DrawMan.AI
             }
             else
             {
-                velocity.y += gravity.y * Time.fixedDeltaTime;
+                velocity.y += gravity.y * behaviour.Stats.GravityAccel * Time.fixedDeltaTime;
             }
 
             behaviour.Rigidbody.velocity = velocity;
