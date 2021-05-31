@@ -173,5 +173,10 @@ namespace DrawMan.Core
             m_inkActual.Value = m_inkCurrent.Value;
             m_currentLine = null;
         }
+
+        public void Toggle()
+        {
+            gameObject.SetActive(gameObject.activeSelf);
+        }
     }
 }

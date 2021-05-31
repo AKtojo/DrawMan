@@ -36,7 +36,7 @@ namespace DrawMan.Core
             }
         }
 
-        public void SwapInk()
+        public void Toggle()
         {
             enabled = !enabled;
 
