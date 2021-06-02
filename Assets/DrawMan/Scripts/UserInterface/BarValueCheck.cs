@@ -1,52 +1,42 @@
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using DrawMan.Core.Variables;
 
 namespace DrawMan.UI
 {
     public class BarValueCheck : MonoBehaviour
     {
-        [SerializeField] private UIDocument m_uiDocument;
-        [SerializeField] private string m_imageName;
+        [SerializeField] private Image currentHealthImage;
 
-        [SerializeField] private FloatVariable m_value;
-        [SerializeField] private VisualElement m_fillImage;
-
-        private void Start()
-        {
-            UpdateBar();
-        }
+        [SerializeField] private FloatVariable health;
 
         private void OnEnable()
         {
-            m_value.Subscribe(UpdateBar);
+            health.Subscribe(UpdateBar);
         }
 
         private void OnDisable()
         {
-            m_value.Unsubscribe(UpdateBar);
+            health.Unsubscribe(UpdateBar);
         }
 
         private void UpdateBar()
         {
-            m_fillImage = m_uiDocument.rootVisualElement.Q<VisualElement>(m_imageName);
-            var w = m_fillImage.style.width;
-            w.value = new Length(m_value.Ratio100, LengthUnit.Percent);
-            m_fillImage.style.width = w;
+            Vector2 anchorMax = currentHealthImage.rectTransform.anchorMax;
+            anchorMax.x = health.Ratio01;
+            currentHealthImage.rectTransform.anchorMax = anchorMax;
         }
 
 #if UNITY_EDITOR
-        [SerializeField] private bool DEBUG;
         private void OnGUI()
         {
-            if (!DEBUG) return;
             if (GUILayout.Button("Damage!"))
             {
-                m_value.Value -= 10;
+                health.Value -= 10;
             }
             else if (GUILayout.Button("Heal!"))
             {
-                m_value.Value += 10;
+                health.Value += 10;
             }
         }
 #endif

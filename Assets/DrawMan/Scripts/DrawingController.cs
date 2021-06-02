@@ -18,6 +18,7 @@ namespace DrawMan.Core
         [SerializeField] private FloatVariable m_inkCurrent;
 
         [Header("Line Drawing Rules")]
+        [SerializeField] [Min(0.0f)] private float m_timeScale;
         [Tooltip("Line drain in percentage per second (%/s).\n[e.g.: 12.34% = 0.1234]")]
         [SerializeField] [Min(0.0f)] private float m_lineDrain;
 #if UNITY_EDITOR
@@ -124,10 +125,12 @@ namespace DrawMan.Core
                 m_sqrTravelledDist -= m_sqrMinLineLength;
                 if (LineIsValid)
                 {
+                    Time.timeScale = m_timeScale;
                     Vector3 point = m_drawAction.Point;
-                    point.z = m_currentLine.LineDepthZ;
+                    point.z = m_currentLine.LineClipZ;
                     // TODO: change Camera.main
                     var camPoint = Camera.main.ScreenToWorldPoint(point);
+                    camPoint.z = m_currentLine.LineDepthZ;
                     m_currentLine.AddPointToLine(camPoint);
                 }
                 else
@@ -154,6 +157,7 @@ namespace DrawMan.Core
 
         private void ReleaseLine()
         {
+            Time.timeScale = 1.0f;
             m_currentLine.StartTimer();
             m_inkCurrent.Value = Mathf.Clamp01(m_inkCurrent.Value);
             m_sqrTravelledDist = 0.0f;

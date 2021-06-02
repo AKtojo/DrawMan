@@ -1,12 +1,13 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace DrawMan.Core.Variables
 {
     [System.Serializable]
     public delegate void ValueChanged();
 
-    [System.Serializable]
     [CreateAssetMenu(fileName = "New Float Variable", menuName = "Variables/Float")]
+    [System.Serializable]
     public class FloatVariable : ScriptableObject, ISerializationCallbackReceiver
     {
         [SerializeField] private float m_value;
