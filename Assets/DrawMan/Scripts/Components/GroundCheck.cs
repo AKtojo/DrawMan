@@ -44,8 +44,8 @@ namespace DrawMan.Components
                 Vector2 normal = hits[i].normal;
                 Vector2 point = hits[i].point;
 
-                float angle = Vector2.Angle(up, normal);
-                float distance = Vector2.Distance(origin, point);
+                angle = Vector2.Angle(up, normal);
+                distance = Vector2.Distance(origin, point);
 
                 if (angle <= m_maxSlopeAngle &&
                     distance <= radius)
@@ -72,6 +72,13 @@ namespace DrawMan.Components
             Vector2 perp2D = Vector2.Perpendicular(down);
             Vector3 perp = new Vector3(perp2D.x, perp2D.y, m_transform.position.z);
             Gizmos.DrawLine(m_transform.position, m_transform.position + perp);
+        }
+
+        float angle, distance;
+        private void OnGUI()
+        {
+            GUI.TextArea(new Rect(256, 0, 256, 24), "Angle: " + angle);
+            GUI.TextArea(new Rect(256, 32, 256, 24), "Distance: " + distance);
         }
 #endif
     }

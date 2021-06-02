@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using DrawMan.Core;
 
-namespace DrawMan
+namespace DrawMan.Components
 {
     public class BlendBetween : MonoBehaviour
     {
@@ -15,7 +14,9 @@ namespace DrawMan
 
         void Update()
         {
-
+            float t = Mathf.Clamp01(Utilities.Inverp(m_start.position, m_end.position, m_target.position));
+            m_cinemachineMixingCamera.m_Weight0 = 1 - t;
+            m_cinemachineMixingCamera.m_Weight1 = t;  
         }
     }
 }
