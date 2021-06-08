@@ -147,17 +147,5 @@ namespace DrawMan.Core
         }
 
         private bool IsFalling(Vector2 down, Vector2 direction) => Vector2.Angle(down, direction) <= RIGHT_ANGLE;
-
-//#if UNITY_EDITOR
-//        private void OnGUI()
-//        {
-//            GUI.TextArea(new Rect(0, 0, 255, 255),string.Format("X: {0}\nY: {1}\nVelocity: {2}\nVertical: {3}\nGrounded: {4}",
-//                m_movementAction.MovementDirection.x,
-//                m_movementAction.MovementDirection.y,
-//                velocity,
-//                m_verticalVelocity,
-//                m_groundCheck.Grounded));
-//        }
-//#endif
     }
 }
