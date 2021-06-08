@@ -60,19 +60,5 @@ namespace DrawMan.Components
             else
                 m_down = -up;
         }
-
-//#if UNITY_EDITOR
-//        private void OnDrawGizmos()
-//        {
-//            Gizmos.color = Color.red;
-//            Vector3 down = new Vector3(m_down.x, m_down.y, m_transform.position.z);
-//            Gizmos.DrawLine(m_transform.position, m_transform.position + down);
-
-//            Gizmos.color = Color.cyan;
-//            Vector2 perp2D = Vector2.Perpendicular(down);
-//            Vector3 perp = new Vector3(perp2D.x, perp2D.y, m_transform.position.z);
-//            Gizmos.DrawLine(m_transform.position, m_transform.position + perp);
-//        }
-//#endif
     }
 }
