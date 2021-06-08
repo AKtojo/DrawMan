@@ -10,10 +10,11 @@ namespace DrawMan.Core.ActionSystem
         private Vector2 m_delta;
         private bool m_release;
         private bool m_press;
+        private bool m_touch;
 
         public Vector2 Point => m_point;
         public Vector2 Delta => m_delta;
-        public bool Touch => m_press && !m_release;
+        public bool Touch => m_touch;
 
         public bool Release
         {
@@ -37,8 +38,9 @@ namespace DrawMan.Core.ActionSystem
 
         public void OnTouch(InputAction.CallbackContext ctx)
         {
-            m_press = ctx.ReadValueAsButton();
-            m_release = !m_press;
+            m_press = ctx.started || ctx.performed;
+            m_touch = m_press;
+            m_release = ctx.canceled;
         }
 
         public void OnPosition(InputAction.CallbackContext ctx)

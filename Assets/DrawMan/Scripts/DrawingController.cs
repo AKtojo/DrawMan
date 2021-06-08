@@ -59,15 +59,33 @@ namespace DrawMan.Core
                     "Delta: {3}\n" +
                     "Point: {4}\n" +
                     "Distance: {5}\n" +
-                    "Ink: {6}/{7}",
+                    "Ink: {6}/{7}\n" +
+                    "Valid line: {8}",
                     m_drawAction.Press, m_drawAction.Release, m_drawAction.Touch,
                     m_drawAction.Delta, m_drawAction.Point, Mathf.Sqrt(m_sqrTravelledDist),
-                    m_inkCurrent.Value, m_inkActual.Value));
+                    m_inkCurrent.Value, m_inkActual.Value, m_currentLine?.IsValid));
         }
 
         private void Awake()
         {
             m_linesPool.Clear();
+        }
+#endif
+#if !UNITY_EDITOR
+        private void OnGUI()
+        {
+            GUI.TextArea(new Rect(0, 0, 256, 256),
+                string.Format(
+                    "Press: {0}\n" +
+                    "Release: {1}\n" +
+                    "Touch: {2}\n" +
+                    "Delta: {3}\n" +
+                    "Point: {4}\n" +
+                    "Distance: {5}\n" +
+                    "Ink: {6}/{7}",
+                    m_drawAction.Press, m_drawAction.Release, m_drawAction.Touch,
+                    m_drawAction.Delta, m_drawAction.Point, Mathf.Sqrt(m_sqrTravelledDist),
+                    m_inkCurrent.Value, m_inkActual.Value));
         }
 #endif
         [SerializeField] [HideInInspector] private float m_sqrMinLineLength;
@@ -81,12 +99,10 @@ namespace DrawMan.Core
         private bool LineIsValid => m_currentLine.IsValid &&
                                     m_currentLine.PointIsFarEnough(m_drawAction.Point, m_sqrMaxDistToEnd);
         private bool InkDrained => m_inkCurrent.Value <= 0.0f || m_inkActual.Value <= 0.0f;
-        private bool StartDrawing =>    //m_drawAction.Press &&
-            Input.GetMouseButtonDown(0) &&
+        private bool StartDrawing =>    m_drawAction.Press &&
                                         m_inkCurrent.Value > 0.0f &&
                                         !m_currentLine;
-        private bool EndDrawing =>  //(m_drawAction.Release ||
-            (Input.GetMouseButtonUp(0) ||
+        private bool EndDrawing =>  (m_drawAction.Release ||
                                     m_inkCurrent.Value <= 0.0f) &&
                                     m_currentLine != null;
 

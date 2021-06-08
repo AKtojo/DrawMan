@@ -44,8 +44,8 @@ namespace DrawMan.Components
                 Vector2 normal = hits[i].normal;
                 Vector2 point = hits[i].point;
 
-                angle = Vector2.Angle(up, normal);
-                distance = Vector2.Distance(origin, point);
+                float angle = Vector2.Angle(up, normal);
+                float distance = Vector2.Distance(origin, point);
 
                 if (angle <= m_maxSlopeAngle &&
                     distance <= radius)
@@ -61,25 +61,18 @@ namespace DrawMan.Components
                 m_down = -up;
         }
 
-#if UNITY_EDITOR
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Vector3 down = new Vector3(m_down.x, m_down.y, m_transform.position.z);
-            Gizmos.DrawLine(m_transform.position, m_transform.position + down);
+//#if UNITY_EDITOR
+//        private void OnDrawGizmos()
+//        {
+//            Gizmos.color = Color.red;
+//            Vector3 down = new Vector3(m_down.x, m_down.y, m_transform.position.z);
+//            Gizmos.DrawLine(m_transform.position, m_transform.position + down);
 
-            Gizmos.color = Color.cyan;
-            Vector2 perp2D = Vector2.Perpendicular(down);
-            Vector3 perp = new Vector3(perp2D.x, perp2D.y, m_transform.position.z);
-            Gizmos.DrawLine(m_transform.position, m_transform.position + perp);
-        }
-
-        float angle, distance;
-        private void OnGUI()
-        {
-            GUI.TextArea(new Rect(256, 0, 256, 24), "Angle: " + angle);
-            GUI.TextArea(new Rect(256, 32, 256, 24), "Distance: " + distance);
-        }
-#endif
+//            Gizmos.color = Color.cyan;
+//            Vector2 perp2D = Vector2.Perpendicular(down);
+//            Vector3 perp = new Vector3(perp2D.x, perp2D.y, m_transform.position.z);
+//            Gizmos.DrawLine(m_transform.position, m_transform.position + perp);
+//        }
+//#endif
     }
 }

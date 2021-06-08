@@ -716,7 +716,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Touch"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""15711d1d-3499-4fa2-bfc8-54aa942d563e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -724,7 +724,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Position"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""7d0ed9f3-e2d5-4734-9f27-7d56f797cf8b"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -732,7 +732,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Delta"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""85c3fba7-137b-4f9e-b238-e7c2b59d770c"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -764,19 +764,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""fe82ef1a-18f6-4413-9194-35764cdce2cd"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Touch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d6275b12-a88d-46d8-920b-be41c20fdb67"",
-                    ""path"": ""<Touchscreen>/press"",
+                    ""id"": ""d27a46d6-08b3-41da-a1c5-ef5c67cf172e"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

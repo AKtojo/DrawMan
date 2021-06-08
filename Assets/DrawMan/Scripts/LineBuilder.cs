@@ -125,7 +125,7 @@ namespace DrawMan.Core
             bool far = true;
             foreach (var tr in m_allowedTransforms)
             {
-                far &= (tr.position - (Vector3)point).sqrMagnitude >= sqrDistance;
+                far &= ((Vector2)tr.position - point).sqrMagnitude >= sqrDistance;
             }
             return far;
         }
@@ -143,6 +143,7 @@ namespace DrawMan.Core
 
         public void ResetLine()
         {
+            m_isValid = true;
             m_lineRenderer.positionCount = 0;
             m_collider.pathCount = 0;
             m_points.Clear();
