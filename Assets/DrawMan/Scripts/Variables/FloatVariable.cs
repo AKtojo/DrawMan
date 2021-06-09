@@ -37,7 +37,7 @@ namespace DrawMan.Core.Variables
         }
 #endif
 
-        [SerializeField][HideInInspector] private float m_ratio100Value;
+        [SerializeField] [HideInInspector] private float m_ratio100Value;
         [SerializeField] [HideInInspector] private float m_ratio01Value;
 
         [System.NonSerialized] private float m_runtimeValue;

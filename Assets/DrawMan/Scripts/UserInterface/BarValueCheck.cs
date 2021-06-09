@@ -1,16 +1,13 @@
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using DrawMan.Core.Variables;
 
 namespace DrawMan.UI
 {
     public class BarValueCheck : MonoBehaviour
     {
-        [SerializeField] private UIDocument m_uiDocument;
-        [SerializeField] private string m_imageName;
-
         [SerializeField] private FloatVariable m_value;
-        [SerializeField] private VisualElement m_fillImage;
+        [SerializeField] private Image m_fillImage;
 
         private void Start()
         {
@@ -29,10 +26,9 @@ namespace DrawMan.UI
 
         private void UpdateBar()
         {
-            m_fillImage = m_uiDocument.rootVisualElement.Q<VisualElement>(m_imageName);
-            var w = m_fillImage.style.width;
-            w.value = new Length(m_value.Ratio100, LengthUnit.Percent);
-            m_fillImage.style.width = w;
+            Vector2 fill = m_fillImage.rectTransform.anchorMax;
+            fill.x = m_value.Ratio01;
+            m_fillImage.rectTransform.anchorMax = fill;
         }
 
 #if UNITY_EDITOR
