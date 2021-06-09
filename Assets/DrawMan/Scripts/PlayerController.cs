@@ -10,6 +10,8 @@ namespace DrawMan.Core
         [SerializeField] private Rigidbody2D m_rigidbody;
         [SerializeField] private GroundCheck m_groundCheck;
         [SerializeField] private CeilingCheck m_ceilingCheck;
+        [SerializeField] private Transform m_stickmanRig;
+        [SerializeField] private Animator m_animator;
 
         [Header("Parameters")]
         [SerializeField] [Min(0.0f)] private float m_maxSpeed;
@@ -31,6 +33,14 @@ namespace DrawMan.Core
         [Header("Character Actions (Input)")]
         [SerializeField] private MovementAction m_movementAction;
         [SerializeField] private JumpAction m_jumpAction;
+
+        // Animation parameters
+        [SerializeField] [HideInInspector] int m_idleHash;
+        [SerializeField] [HideInInspector] int m_runHash;
+        [SerializeField] [HideInInspector] int m_jumpHash;
+        [SerializeField] [HideInInspector] int m_attackHash;
+        [SerializeField] [HideInInspector] int m_idleAttackHash;
+
 
         private Vector2 m_verticalVelocity = Vector2.zero;
         private Vector2 velocity = Vector2.zero;
@@ -65,16 +75,30 @@ namespace DrawMan.Core
             // Init
             m_groundCheck.CheckCollision();
 
+            float x = m_movementAction.MovementDirection.x;
+
             Vector2 up = m_transform.up;
             Vector2 right = Vector2.Perpendicular(m_groundCheck.Down);
-            Vector2 dir = right * m_movementAction.MovementDirection.x;
+            Vector2 dir = right * x;
             Vector2 dirNorm = Vector3.Normalize(dir);
 
             Vector2 minVelocity = dirNorm * m_minSpeed;
 
+            if (x != 0 && m_groundCheck.Grounded)
+            {
+                m_animator.Play(m_runHash);
+            }
+            else if (m_groundCheck.Grounded)
+            {
+                m_animator.Play(m_idleHash);
+            }
+
+            Flip(x);
+
             velocity = dir * m_maxSpeed;
 
             m_isFalling = IsFalling(-up, m_verticalVelocity);
+
             float gravityAccel = m_isFalling ? m_gravityAccel : m_jumpGravityAccel;
 
             // Apply gravity
@@ -90,6 +114,7 @@ namespace DrawMan.Core
             if (m_jumpAction.Jump && m_groundCheck.Grounded)
             {
                 // OnJump event
+                m_animator.Play(m_jumpHash);
                 m_verticalVelocity = up * m_jumpImpulseForce;
                 m_groundCheck.Clear();
             }
@@ -113,6 +138,7 @@ namespace DrawMan.Core
             else if (!m_wasGrounded && m_groundCheck.Grounded)
             {
                 // OnLand event
+                m_animator.Play(m_idleHash);
             }
             else
             {
@@ -141,11 +167,32 @@ namespace DrawMan.Core
                 // invert facing status
                 m_facingRight = !m_facingRight;
 
+                Vector3 rot = m_stickmanRig.localRotation.eulerAngles;
+                rot.y = (rot.y + 180.0f) % 360.0f;
+                m_stickmanRig.localRotation = Quaternion.Euler(rot);
+
                 // onFlip event
                 //Debug.Log("Implement onFlip event!");
             }
         }
 
         private bool IsFalling(Vector2 down, Vector2 direction) => Vector2.Angle(down, direction) <= RIGHT_ANGLE;
+
+#if UNITY_EDITOR
+        [Header("Animation strings")]
+        [SerializeField] string idleAnimation;
+        [SerializeField] string runAnimation;
+        [SerializeField] string jumpAnimation;
+        [SerializeField] string attackAnimation;
+        [SerializeField] string idleAttackAnimation;
+        private void OnValidate()
+        {
+            m_idleHash = Animator.StringToHash(idleAnimation);
+            m_runHash = Animator.StringToHash(runAnimation);
+            m_jumpHash = Animator.StringToHash(jumpAnimation);
+            m_attackHash = Animator.StringToHash(attackAnimation);
+            m_idleAttackHash = Animator.StringToHash(idleAttackAnimation);
+        }
+#endif
     }
 }
