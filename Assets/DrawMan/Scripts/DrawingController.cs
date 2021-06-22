@@ -7,6 +7,29 @@ namespace DrawMan.Core
 {
     public class DrawingController : MonoBehaviour
     {
+        [System.Serializable]
+        private struct CircleArea
+        {
+            [SerializeField] private Vector2 anchor;
+            [SerializeField] private Vector2 position;
+            [SerializeField] public float Radius;
+
+            /// <summary>
+            /// Computes and returns the circle's position
+            /// </summary>
+            /// <returns>The position based on the screen anchor point</returns>
+            public Vector2 GetPosition()
+            {
+                Vector2 screen = new Vector2(Screen.width, Screen.height);
+                return (screen * anchor) + position;
+            }
+
+            public float GetRadius()
+            {
+                return Radius;
+            }
+        }
+
         [Header("Components")]
         [SerializeField] private DrawAction m_drawAction;
         [SerializeField] private ObjectPool m_linesPool;
@@ -18,6 +41,7 @@ namespace DrawMan.Core
         [SerializeField] private FloatVariable m_inkCurrent;
 
         [Header("Line Drawing Rules")]
+        [SerializeField] private CircleArea[] m_forbiddenAreas;
         [SerializeField] [Range(0.0f, 1.0f)] private float m_timeScale;
         [Tooltip("Line drain in percentage per second (%/s).\n[e.g.: 12.34% = 0.1234]")]
         [SerializeField] [Min(0.0f)] private float m_lineDrain;
@@ -38,6 +62,7 @@ namespace DrawMan.Core
 
         private void OnDrawGizmos()
         {
+            if (!DEBUG) return;
             Gizmos.color = new Color(1, 0, 0, 0.25f); // transparent red
 
             if (m_currentLine)
@@ -45,25 +70,6 @@ namespace DrawMan.Core
                 // the zone where you touch that must have nothing inside
                 Gizmos.DrawSphere(m_drawAction.Point, m_maxDistToEnd);
             }
-        }
-
-        private void OnGUI()
-        {
-            if (!DEBUG) return;
-
-            GUI.TextArea(new Rect(0, 0, 256, 256),
-                string.Format(
-                    "Press: {0}\n" +
-                    "Release: {1}\n" +
-                    "Touch: {2}\n" +
-                    "Delta: {3}\n" +
-                    "Point: {4}\n" +
-                    "Distance: {5}\n" +
-                    "Ink: {6}/{7}\n" +
-                    "Valid line: {8}",
-                    m_drawAction.Press, m_drawAction.Release, m_drawAction.Touch,
-                    m_drawAction.Delta, m_drawAction.Point, Mathf.Sqrt(m_sqrTravelledDist),
-                    m_inkCurrent.Value, m_inkActual.Value, m_currentLine?.IsValid));
         }
 
         private void Awake()
@@ -116,6 +122,11 @@ namespace DrawMan.Core
             //}
             //return;
 
+            if (Exit())
+            {
+                return;
+            }
+
             if (StartDrawing)
             {
                 InstantiateLine();
@@ -130,6 +141,17 @@ namespace DrawMan.Core
             {
                 UpdateLine();
             }
+        }
+
+        private bool Exit()
+        {
+            bool exit = false;
+            for (int i = 0; i < m_forbiddenAreas.Length; i++)
+            {
+                float r = m_forbiddenAreas[i].GetRadius();
+                exit |= Vector2.Distance(m_drawAction.Point, m_forbiddenAreas[i].GetPosition()) <= r;
+            }
+            return exit;
         }
 
         private void UpdateLine()

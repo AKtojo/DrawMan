@@ -38,7 +38,7 @@ namespace DrawMan.Core
 
         public void Toggle()
         {
-            enabled = !enabled;
+            gameObject.SetActive(!gameObject.activeSelf);
 
             if (enabled)
             {

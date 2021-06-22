@@ -34,8 +34,8 @@ namespace DrawMan.Core.ActionSystem
         public void OnDrawShape(InputAction.CallbackContext ctx)
         {
             m_phase = ctx.phase;
-            m_shapeStart = ctx.phase == InputActionPhase.Started || ctx.phase == InputActionPhase.Performed;
-            m_shapeEnd = ctx.phase == InputActionPhase.Canceled;
+            m_shapeStart = ctx.started || ctx.performed;
+            m_shapeEnd = ctx.canceled;
         }
     }
 }
