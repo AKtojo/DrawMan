@@ -6,7 +6,7 @@ namespace DrawMan.AI
     [CreateAssetMenu(fileName = "New Air Movement", menuName = "FSM/Enemies/Actions/AirMovement")]
     public class AirMovement : EnemyMovement
     {
-        public override void Move(Vector2 direction, EnemyBehaviour behaviour)
+        public override void Move(ref float currentSpeed, Vector2 direction, EnemyBehaviour behaviour)
         {
             Vector2 velocity = Vector2.zero;
 

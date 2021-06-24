@@ -6,28 +6,27 @@ namespace DrawMan.AI
     [CreateAssetMenu(fileName = "New Ground Movement", menuName = "FSM/Enemies/Actions/GroundMovement")]
     public class GroundMovement : EnemyMovement
     {
-        public override void Move(Vector2 direction, EnemyBehaviour behaviour)
+        public override void Move(ref float currentSpeed, Vector2 direction, EnemyBehaviour behaviour)
         {
-            Vector2 velocity = Vector2.zero;
             Vector2 gravity = behaviour.Gravity;
+            float dt = Time.fixedDeltaTime;
+
+            Vector2 right = Vector2.Perpendicular(behaviour.Down) * direction.x;
+            Vector2 down = behaviour.Down;
 
             Vector2 rbVelocity = behaviour.Rigidbody.velocity;
 
-            velocity.x = Mathf.MoveTowards(
-                rbVelocity.x,
+            currentSpeed = Mathf.MoveTowards(
+                currentSpeed,
                 direction.x * behaviour.Stats.MoveSpeed,
-                behaviour.Stats.ChangeDirectionSpeed * Time.fixedDeltaTime);
-            
-            if (behaviour.Grounded)
+                behaviour.Stats.ChangeDirectionSpeed * dt);
+
+            if (!behaviour.Grounded)
             {
-                velocity.y = gravity.y;
-            }
-            else
-            {
-                velocity.y += gravity.y * behaviour.Stats.GravityAccel * Time.fixedDeltaTime;
+                down += gravity * behaviour.Stats.GravityAccel * dt;
             }
 
-            behaviour.Rigidbody.velocity = velocity;
+            behaviour.Rigidbody.velocity = (right * Mathf.Abs(currentSpeed)) + down;
         }
     }
 }

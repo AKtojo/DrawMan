@@ -76,13 +76,14 @@ namespace DrawMan.Core
             m_groundCheck.CheckCollision();
 
             float x = m_movementAction.MovementDirection.x;
+            float speed = x * m_maxSpeed;
 
             Vector2 up = m_transform.up;
             Vector2 right = Vector2.Perpendicular(m_groundCheck.Down);
-            Vector2 dir = right * x;
-            Vector2 dirNorm = Vector3.Normalize(dir);
+            //Vector2 dir = right * x;
+            //Vector2 dirNorm = Vector3.Normalize(dir);
 
-            Vector2 minVelocity = dirNorm * m_minSpeed;
+            Vector2 minVelocity = right * x * m_minSpeed; // dirNorm * m_minSpeed;
 
             if (x != 0 && m_groundCheck.Grounded)
             {
@@ -95,7 +96,7 @@ namespace DrawMan.Core
 
             Flip(x);
 
-            velocity = dir * m_maxSpeed;
+            velocity = right * speed; // dir * m_maxSpeed;
 
             m_isFalling = IsFalling(-up, m_verticalVelocity);
 
@@ -105,7 +106,7 @@ namespace DrawMan.Core
             ApplyGravity(gravityAccel);
 
             // Clamp velocity
-            if (velocity != Vector2.zero && velocity.sqrMagnitude < minVelocity.sqrMagnitude)
+            if (velocity != Vector2.zero && Mathf.Abs(speed) < m_minSpeed)
             {
                 velocity = minVelocity;
             }

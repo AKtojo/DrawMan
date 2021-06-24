@@ -49,6 +49,7 @@ namespace DrawMan.Components
 
         private Vector2 direction;
         private FiniteStateMachine<EnemyBehaviour> machine;
+        private float currentSpeed = 0f;
 
         public Rigidbody2D Rigidbody => rb;
 
@@ -60,6 +61,7 @@ namespace DrawMan.Components
         public Vector2 Gravity => transform.up * -stats.GravityAccel;
 
         public bool Grounded => groundCheck.Grounded;
+        public Vector2 Down => groundCheck.Down;
 
         public void SetDirection(Vector2 direction)
         {
@@ -96,7 +98,7 @@ namespace DrawMan.Components
             groundCheck.CheckCollision();
 
             // Move here
-            movement.Move(Direction, this);
+            movement.Move(ref currentSpeed, Direction, this);
         }
 
         private void OnGUI()

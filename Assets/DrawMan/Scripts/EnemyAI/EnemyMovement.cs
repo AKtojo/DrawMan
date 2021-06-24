@@ -5,6 +5,6 @@ namespace DrawMan.AI
 {
     public abstract class EnemyMovement : ScriptableObject
     {
-        public abstract void Move(Vector2 direction, EnemyBehaviour behaviour);
+        public abstract void Move(ref float currentSpeed, Vector2 direction, EnemyBehaviour behaviour);
     }
 }
