@@ -18,6 +18,7 @@ namespace DrawMan.AI
 
         public override void Enter(FiniteStateMachine<EnemyBehaviour> fsm, EnemyBehaviour container)
         {
+            container.ExitCombat();
             container.SetDirection(Vector2.zero);
 
             // Change animation
@@ -57,6 +58,7 @@ namespace DrawMan.AI
 
         public override void Exit(FiniteStateMachine<EnemyBehaviour> fsm, EnemyBehaviour container)
         {
+            container.EnterCombat();
             // Do nothing
         }
 

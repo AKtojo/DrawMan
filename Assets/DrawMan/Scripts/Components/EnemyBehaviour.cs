@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using DrawMan.AI;
 
 namespace DrawMan.Components
@@ -39,6 +40,7 @@ namespace DrawMan.Components
         [Header("Components")]
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private GroundCheck groundCheck;
+        [SerializeField] private SymbolsSequencer sequencer;
 
         [Header("Parameters")]
         [SerializeField] private EnemyStats stats;
@@ -46,6 +48,10 @@ namespace DrawMan.Components
 
         [Header("Actions")]
         [SerializeField] private EnemyMovement movement;
+
+        [Header("Events")]
+        [SerializeField] private UnityEvent onEnterCombat;
+        [SerializeField] private UnityEvent onExitCombat;
 
         private Vector2 direction;
         private FiniteStateMachine<EnemyBehaviour> machine;
@@ -63,9 +69,30 @@ namespace DrawMan.Components
         public bool Grounded => groundCheck.Grounded;
         public Vector2 Down => groundCheck.Down;
 
+        bool inCombat = false;
+        public bool InCombat => inCombat;
+
         public void SetDirection(Vector2 direction)
         {
             this.direction = direction;
+        }
+
+        public void EnterCombat()
+        {
+            if (!inCombat)
+            {
+                onEnterCombat?.Invoke();
+                inCombat = true;
+            }
+        }
+
+        public void ExitCombat()
+        {
+            if (inCombat)
+            {
+                onExitCombat?.Invoke();
+                inCombat = false;
+            }
         }
 
         public void Awake()

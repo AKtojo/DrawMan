@@ -10,17 +10,23 @@ namespace DrawMan.Components
     {
         [SerializeField] private HorizontalLayoutGroup m_symbolsContainer;
         [SerializeField] private GestureHelperContainer m_helperContainer;
+        
+        [Space]
         [SerializeField] private ImageEntry[] m_sequence;
 
+        [Space]
         [SerializeField] private UnityEvent m_onDie;
 
         private List<Image> m_symbols;
 
         private int m_currentIndex = 0;
 
+        public bool InCombat { get; set; }
+
         private void OnEnable()
         {
             m_currentIndex = 0;
+            enabled = true;
         }
 
         private void Awake()
